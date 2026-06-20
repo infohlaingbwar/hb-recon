@@ -16,7 +16,34 @@ if IS_WINDOWS:
     print('[!] Install on WSL/Linux or use docker')
     sys.exit(1)
 
-GO = os.path.expanduser("~/go/bin")
+# Auto-detect tool paths
+def find_tool(tool_name):
+    """Find tool in PATH, ~/go/bin, or /usr/bin"""
+    # Try shutil.which first (checks PATH)
+    import shutil
+    tool_path = shutil.which(tool_name)
+    if tool_path:
+        return tool_path
+    
+    # Try ~/go/bin
+    go_path = os.path.expanduser(f"~/go/bin/{tool_name}")
+    if os.path.exists(go_path):
+        return go_path
+    
+    # Try /usr/bin
+    usr_path = f"/usr/bin/{tool_name}"
+    if os.path.exists(usr_path):
+        return usr_path
+    
+    # Fallback to tool name (will fail if not in PATH)
+    return tool_name
+
+# Tool paths
+SUBFINDER = find_tool("subfinder")
+HTTPX = find_tool("httpx") or find_tool("httpx-toolkit")
+KATANA = find_tool("katana")
+GF = find_tool("gf")
+WHATWEB = find_tool("whatweb")
 
 ("~/go/bin")
 
@@ -374,7 +401,7 @@ def main():
 
     # Phase 1 — subfinder + httpx
     run(
-        f"{GO}/subfinder -d {target} -s hackertarget,waybackarchive -silent | "
+        f"{SUBFINDER} -d {target} -s hackertarget,waybackarchive -silent | "
         f"tee {d}/subdomains.txt | "
         f"httpx-toolkit -mc 200,301,403 -silent > {d}/alive.txt",
         "Subfinder + Httpx"
@@ -384,16 +411,16 @@ def main():
     print("\n[*] WhatWeb + Katana (parallel)...")
     # whatweb is already called inside build_ai_report via scan_tech()
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex:
-        f1 = ex.submit(run, f"{GO}/katana -list {d}/alive.txt -d 3 -c 15 -silent > {d}/urls.txt",
+        f1 = ex.submit(run, f"{KATANA} -list {d}/alive.txt -d 3 -c 15 -silent > {d}/urls.txt",
                        "Katana (crawl)")
         concurrent.futures.wait([f1])
 
     # Phase 3 — gf patterns
     if os.path.exists(f"{d}/urls.txt"):
         run(
-            f"cat {d}/urls.txt | {GO}/gf xss > {d}/xss.txt && "
-            f"cat {d}/urls.txt | {GO}/gf sqli > {d}/sqli.txt && "
-            f"cat {d}/urls.txt | {GO}/gf idor > {d}/idor.txt",
+            f"cat {d}/urls.txt | {GF} xss > {d}/xss.txt && "
+            f"cat {d}/urls.txt | {GF} sqli > {d}/sqli.txt && "
+            f"cat {d}/urls.txt | {GF} idor > {d}/idor.txt",
             "gf (XSS/SQLi/IDOR patterns)"
         )
 

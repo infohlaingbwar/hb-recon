@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hb-recon"
-version = "1.0.2"
+version = "1.0.3"
 description = "Automated reconnaissance tool with AI report generation. Subdomain enumeration, endpoint crawling, and vulnerability pattern detection."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Hlaing Bwar", email = "infohlaingbwar@gmail.com"}
+    {name = "Hlaing Bwar", email = "info@hlaingbwar.com"}
 ]
 keywords = ["recon", "reconnaissance", "osint", "bug-bounty", "pentesting", "subdomain", "enumeration", "security", "ethical-hacking"]
 classifiers = [

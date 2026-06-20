@@ -85,8 +85,19 @@ whatweb --version
 
 ### Option 1: PyPI (Recommended)
 
+**On Kali/Debian/Ubuntu:**
+```bash
+pip install --break-system-packages hb-recon
+```
+
+**On other systems:**
 ```bash
 pip install hb-recon
+```
+
+**Or use pipx (recommended for isolated environments):**
+```bash
+pipx install hb-recon
 ```
 
 ### Option 2: From Source

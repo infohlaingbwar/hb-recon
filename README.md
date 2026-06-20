@@ -1,5 +1,12 @@
 # HB-Recon
 
+[![PyPI version](https://badge.fury.io/py/hb-recon.svg)](https://pypi.org/project/hb-recon/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/hb-recon)](https://pypi.org/project/hb-recon/)
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/infohlaingbwar/hb-recon?style=social)](https://github.com/infohlaingbwar/hb-recon/stargazers)
+
+
 **Automated reconnaissance tool with AI-ready report generation.**
 
 Perfect for bug bounty hunters, pentesters, and security researchers.
